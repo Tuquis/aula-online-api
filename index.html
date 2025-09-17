@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Online - Teste de Pagamento</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #007bff;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .auth-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .auth-form {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 300px;
+            background: #e8f4ff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #bd2130;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .package-card h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 2rem;
+            color: #28a745;
+            margin: 15px 0;
+        }
+
+        .features {
+            list-style: none;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .features li:last-child {
+            border-bottom: none;
+        }
+
+        .balance-section {
+            background: #e8f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .balance-amount {
+            font-size: 2.5rem;
+            color: #007bff;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+
+        @media (max-width: 768px) {
+            .auth-section {
+                flex-direction: column;
+            }
+            
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Aula Online</h1>
+            <p>Teste de integração com Stripe</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="message" class="message hidden"></div>
+
+        <div class="auth-section">
+            <div class="card auth-form">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" placeholder="seu@email.com" value="aluno@exemplo.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" placeholder="Sua senha" value="senha123">
+                </div>
+                <button id="loginBtn">Entrar</button>
+                <button id="registerBtn" class="btn-success">Criar Conta</button>
+            </div>
+
+            <div class="card user-info">
+                <h2>Informações do Usuário</h2>
+                <div id="userInfo">
+                    <p>Faça login para ver suas informações</p>
+                </div>
+                <div id="userActions" class="hidden">
+                    <button id="getProfileBtn">Ver Perfil</button>
+                    <button id="getBalanceBtn">Ver Saldo</button>
+                    <button id="logoutBtn" class="btn-danger">Sair</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card balance-section hidden" id="balanceSection">
+            <h2>Saldo de Aulas</h2>
+            <div class="balance-amount" id="balanceAmount">0</div>
+            <p>Aulas disponíveis</p>
+        </div>
+
+        <div class="card">
+            <h2>Pacotes Disponíveis</h2>
+            <div id="packagesLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Carregando pacotes...</p>
+            </div>
+            <div id="packagesGrid" class="packages-grid hidden"></div>
+        </div>
+
+        <div class="card hidden" id="paymentResult">
+            <h2>Resultado do Pagamento</h2>
+            <div id="paymentResultContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Frontend de teste para integração com Stripe | Aula Online</p>
+        </div>
+    </footer>
+
+     <script>
+        // Configurações
+        const API_BASE_URL = 'http://localhost:3000/api';
+        let authToken = localStorage.getItem('authToken');
+        let refreshToken = localStorage.getItem('refreshToken');
+
+        // Elementos DOM
+        const messageEl = document.getElementById('message');
+        const userInfoEl = document.getElementById('userInfo');
+        const userActionsEl = document.getElementById('userActions');
+        const balanceSectionEl = document.getElementById('balanceSection');
+        const balanceAmountEl = document.getElementById('balanceAmount');
+        const packagesLoadingEl = document.getElementById('packagesLoading');
+        const packagesGridEl = document.getElementById('packagesGrid');
+        const paymentResultEl = document.getElementById('paymentResult');
+        const paymentResultContentEl = document.getElementById('paymentResultContent');
+
+        // Inicializar a aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar se já está logado
+            if (authToken) {
+                showUserInfo();
+                loadPackages();
+            }
+
+            // Event Listeners
+            document.getElementById('loginBtn').addEventListener('click', login);
+            document.getElementById('registerBtn').addEventListener('click', register);
+            document.getElementById('getProfileBtn').addEventListener('click', getProfile);
+            document.getElementById('getBalanceBtn').addEventListener('click', getBalance);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // Verificar resultado de pagamento ao carregar a página
+            checkPaymentResult();
+        });
+
+        // Mostrar mensagem
+        function showMessage(text, type = 'success') {
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+            messageEl.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageEl.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Requisições API
+        async function apiRequest(url, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            if (authToken) {
+                defaultOptions.headers.Authorization = `Bearer ${authToken}`;
+            }
+
+            const finalOptions = { ...defaultOptions, ...options };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}${url}`, finalOptions);
+                
+                // Verificar se token expirou
+                if (response.status === 401) {
+                    const errorData = await response.json();
+                    if (errorData.code === 'TOKEN_EXPIRED') {
+                        await refreshAuthToken();
+                        // Repetir a requisição com novo token
+                        if (authToken) {
+                            finalOptions.headers.Authorization = `Bearer ${authToken}`;
+                            const newResponse = await fetch(`${API_BASE_URL}${url}`, finalOptions);
+                            const newData = await newResponse.json();
+                            if (!newResponse.ok) throw new Error(newData.error || 'Erro na requisição');
+                            return newData;
+                        }
+                    }
+                }
+                
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro na requisição');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                showMessage(error.message, 'error');
+                throw error;
+            }
+        }
+
+        // Refresh token
+        async function refreshAuthToken() {
+            try {
+                if (!refreshToken) {
+                    throw new Error('Refresh token não disponível');
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/auth/refresh-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ refreshToken }),
+                });
+                
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao renovar token');
+                }
+                
+                authToken = data.accessToken;
+                refreshToken = data.refreshToken;
+                
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                
+                return true;
+            } catch (error) {
+                console.error('Erro ao renovar token:', error);
+                logout();
+                return false;
+            }
+        }
+
+        // Login
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showMessage('Preencha e-mail e senha', 'error');
+                return;
+            }
+
+            try {
+                const data = await apiRequest('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password }),
+                });
+
+                authToken = data.accessToken;
+                refreshToken = data.refreshToken;
+                
+                localStorage.setItem('authToken', authToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                
+                showMessage('Login realizado com sucesso!');
+                showUserInfo();
+                loadPackages();
+            } catch (error) {
+                // Mensagem já foi mostrada no apiRequest
+            }
+        }
+
+        // Registrar
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                showMessage('Preencha e-mail e senha', 'error');
+                return;
+            }
+
+            try {
+                const data = await apiRequest('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({ 
+                        email, 
+                        password, 
+                        name: 'Novo Usuário' 
+                    }),
+                });
+
+                showMessage('Conta criada com sucesso! Verifique seu e-mail.');
+            } catch (error) {
+                // Mensagem já foi mostrada no apiRequest
+            }
+        }
+
+        // Logout
+        function logout() {
+            authToken = null;
+            refreshToken = null;
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('refreshToken');
+            
+            userInfoEl.innerHTML = '<p>Faça login para ver suas informações</p>';
+            userActionsEl.classList.add('hidden');
+            balanceSectionEl.classList.add('hidden');
+            packagesGridEl.classList.add('hidden');
+            packagesLoadingEl.classList.remove('hidden');
+            
+            showMessage('Logout realizado com sucesso!');
+        }
+
+        // Mostrar informações do usuário
+        function showUserInfo() {
+            if (!authToken) {
+                userInfoEl.innerHTML = '<p>Faça login para ver suas informações</p>';
+                userActionsEl.classList.add('hidden');
+                return;
+            }
+            
+            userInfoEl.innerHTML = `
+                <p>Você está logado!</p>
+                <p>Token: ${authToken.substring(0, 20)}...</p>
+            `;
+            userActionsEl.classList.remove('hidden');
+        }
+
+        // Obter perfil
+        async function getProfile() {
+            try {
+                const data = await apiRequest('/users/profile');
+                userInfoEl.innerHTML = `
+                    <p><strong>Nome:</strong> ${data.name}</p>
+                    <p><strong>E-mail:</strong> ${data.email}</p>
+                    <p><strong>Função:</strong> ${data.role}</p>
+                    <p><strong>Conta criada em:</strong> ${new Date(data.created_at).toLocaleDateString()}</p>
+                `;
+            } catch (error) {
+                // Mensagem já foi mostrada no apiRequest
+            }
+        }
+
+        // Obter saldo
+        async function getBalance() {
+            try {
+                const data = await apiRequest('/users/balance');
+                balanceAmountEl.textContent = data.available_lessons;
+                balanceSectionEl.classList.remove('hidden');
+            } catch (error) {
+                // Mensagem já foi mostrada no apiRequest
+            }
+        }
+
+        // Carregar pacotes
+        async function loadPackages() {
+            try {
+                const packages = await apiRequest('/packages');
+                packagesLoadingEl.classList.add('hidden');
+                packagesGridEl.classList.remove('hidden');
+                
+                packagesGridEl.innerHTML = packages.map(pkg => `
+                    <div class="package-card">
+                        <h3>${pkg.name}</h3>
+                        <div class="price">R$ ${pkg.price.toFixed(2)}</div>
+                        <ul class="features">
+                            <li><strong>${pkg.lesson_count}</strong> aulas</li>
+                            <li>${pkg.description || 'Sem descrição'}</li>
+                        </ul>
+                        <button onclick="window.purchasePackage('${pkg.id}')" class="btn-success">Comprar Agora</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                packagesLoadingEl.innerHTML = '<p>Erro ao carregar pacotes. Tente novamente.</p>';
+            }
+        }
+
+        // Comprar pacote (CORRIGIDO - tornada global corretamente)
+        window.purchasePackage = async function(packageId) {
+            try {
+                const data = await apiRequest('/payment/create-checkout-session', {
+                    method: 'POST',
+                    body: JSON.stringify({ packageId }),
+                });
+
+                // Abre em uma nova janela
+                window.open(data.url, '_blank', 'width=600,height=700');
+                
+                showMessage('Redirecionando para pagamento...');
+                
+            } catch (error) {
+                console.error('Erro no pagamento:', error);
+                showMessage('Erro ao iniciar pagamento: ' + error.message, 'error');
+            }
+        };
+
+        // Verificar se há parâmetros de resultado de pagamento na URL
+        function checkPaymentResult() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+            const success = urlParams.get('success');
+            
+            if (sessionId) {
+                paymentResultEl.classList.remove('hidden');
+                
+                if (success === 'true') {
+                    paymentResultContentEl.innerHTML = `
+                        <div class="message success">
+                            <h3>Pagamento realizado com sucesso!</h3>
+                            <p>ID da sessão: ${sessionId}</p>
+                            <p>Seu saldo de aulas será atualizado em breve.</p>
+                        </div>
+                    `;
+                    
+                    // Atualizar o saldo após um pagamento bem-sucedido
+                    setTimeout(getBalance, 2000);
+                } else {
+                    paymentResultContentEl.innerHTML = `
+                        <div class="message error">
+                            <h3>Pagamento cancelado ou falhou</h3>
+                            <p>Tente novamente ou entre em contato com o suporte.</p>
+                        </div>
+                    `;
+                }
+
+                function startBalancePolling() {
+  if (window.balancePollingInterval) {
+    clearInterval(window.balancePollingInterval);
+  }
+  
+  window.balancePollingInterval = setInterval(async () => {
+    if (authToken) {
+      try {
+        const data = await apiRequest('/users/balance');
+        const currentBalance = parseInt(balanceAmountEl.textContent);
+        if (data.available_lessons !== currentBalance) {
+          balanceAmountEl.textContent = data.available_lessons;
+          showMessage('Saldo atualizado!', 'success');
+        }
+      } catch (error) {
+        // Silencioso - não mostrar erro
+      }
+    }
+  }, 5000); // Verificar a cada 5 segundos
+}
+
+// Iniciar polling quando usuário logar
+function showUserInfo() {
+  if (!authToken) {
+    userInfoEl.innerHTML = '<p>Faça login para ver suas informações</p>';
+    userActionsEl.classList.add('hidden');
+    return;
+  }
+  
+  userInfoEl.innerHTML = `
+    <p>Você está logado!</p>
+    <p>Token: ${authToken.substring(0, 20)}...</p>
+  `;
+  userActionsEl.classList.remove('hidden');
+  
+  // Iniciar polling do saldo
+  startBalancePolling();
+}
+
+// Parar polling quando deslogar
+function logout() {
+  authToken = null;
+  refreshToken = null;
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('refreshToken');
+  
+  if (window.balancePollingInterval) {
+    clearInterval(window.balancePollingInterval);
+  }
+  
+  userInfoEl.innerHTML = '<p>Faça login para ver suas informações</p>';
+  userActionsEl.classList.add('hidden');
+  balanceSectionEl.classList.add('hidden');
+  packagesGridEl.classList.add('hidden');
+  packagesLoadingEl.classList.remove('hidden');
+  
+  showMessage('Logout realizado com sucesso!');
+}
+                
+                // Limpar a URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+    </script>
+</body>
+</html>

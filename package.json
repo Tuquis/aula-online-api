@@ -1,21 +1,29 @@
 {
   "name": "aula-online-api",
   "version": "1.0.0",
+  "description": "API para plataforma de aulas online",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@supabase/supabase-js": "^2.0.0",
-    "axios": "^1.4.0",
+    "@supabase/supabase-js": "^2.x.x",
+    "axios": "^1.12.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.x.x",
     "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0"
+    "express-rate-limit": "^7.x.x",
+    "joi": "^17.x.x",
+    "jsonwebtoken": "^9.x.x",
+    "mercadopago": "^2.x.x",
+    "nodemailer": "^6.9.7"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.x.x"
   }
 }
